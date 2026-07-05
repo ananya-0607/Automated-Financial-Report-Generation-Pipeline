@@ -1,0 +1,624 @@
+# =============================================================================
+# ADQVEST — MASTER CONFIGURATION FILE
+# =============================================================================
+# STRUCTURE:
+#   - "db"            block  →  Common database connections (same for ALL projects)
+#   - "python"        block  →  Python exe + default module path
+#   - "projects"      block  →  Per-project PPT template, output dirs, functions
+#
+# HOW TO SWITCH ENVIRONMENT:
+#   Local  :  Sys.setenv(R_CONFIG_ACTIVE = "local_santonu")
+#   Server :  System Env Variable  R_CONFIG_ACTIVE = default  (or leave unset)
+#             Control Panel → System → Advanced → Environment Variables → New
+#             Variable Name : R_CONFIG_ACTIVE  |  Variable Value : default
+#
+# PROJECTS COVERED:
+#   Windows_3 Server  →  NIIF_GRIX | PREMJI_CPI | AZIM_PREMJI_WEEKLY | LIGHT_HOUSE
+#   Windows_Main      →  AMBIT_MONTHLY_HFI | AMBIT_UTILITIES_SECTOR
+#
+# NOTE ON python_module:
+#   If a project sets its own "python_module", that overrides the env-level default.
+#   AMBIT projects (Windows_Main) use get_data_from_thurro_api.py — set per project.
+# =============================================================================
+
+
+# -----------------------------------------------------------------------
+# DEFAULT  →  Windows Server (Administrator)  [PRODUCTION]
+# -----------------------------------------------------------------------
+default:
+  # ------------------------------------------------------------------
+  # PROJECTS — per-project PPT template, output dirs, functions
+  # ------------------------------------------------------------------
+  projects:
+
+    # ----------------------------------------------------------------
+    # NIIF GRIX  (Windows_3 Server)
+    # Script: A003_NIIF_MONTHLY_GRIX_PPT_AI_GENERATED_DESCRIPTION_V1.R
+    # ----------------------------------------------------------------
+    NIIF_GRIX_PPT:
+      ppt_template:  "E:/R_PPT/PPTGENERATION/template.pptx"
+      ai_title_dir:  "E:/R_PPT/PPTGENERATION/NIIF_MONTHLY_GRIX_REPORT_WIDGETS_AI_DESCRIPTION_WITH_AI_SUMMARY_V1.xlsx"
+      slides_config: "E:/R_PPT/PPTGENERATION/NIIF_MONTHLY_PPT_SLIDE_CONFIG_TEMPLATE.xlsx"
+      ai_slide_config: "E:/R_PPT/PPTGENERATION/NIIF_MONTHLY_PPT_SLIDE_CONFIG.xlsx"
+      ppt_output:    "E:/R_PPT/PPTGENERATION/NIIF_GRIX_PPT_OUTPUT/NIIF_GRIX_PPT.pptx"
+      ppt_dir:       "E:/R_PPT/PPTGENERATION"
+      proj_font:     "C:/Windows/Fonts/calibril.ttf"
+      # ── Debug: save chart data to Excel for inspection ────────────────
+      debug_chart_data:      True
+      debug_chart_data_path: "E:/R_PPT/PPTGENERATION/debug_chart_data.xlsx"
+
+      chart_theme:
+            # ── Grid ─────────────────────────────────────────────────
+            grid_show: true
+            grid_color: "#BDBDBD"
+            grid_alpha: 0.5
+            grid_width: 0.5
+            # ── Y-axis number format ──────────────────────────────────
+            y_fmt: "parens"          # plain | comma | percent | parens
+            y2_fmt: "parens"
+            y_show_labels: true
+            y2_show_labels: true
+            tick_color: "#000000"
+            # ── Y-axis rotated unit labels ────────────────────────────
+            # Set "" here for global default; override per chart via y1_label in Excel.
+            y_axis_label: ""
+            y_axis_label_size: 10
+            y2_axis_label: ""
+            y2_axis_label_size: 10
+            # ── Series colours ────────────────────────────────────────
+            bar_color: "#4472C4"
+            line_colors: ["#4472C4", "#9C1C2C", "#C45050", "#6BA85F"]
+            line_width: 0.8         # R/ggplot2 default is ~0.5mm ≈ 0.8–1.0pt at display size
+            line_style: "-"         # "-" | "--" | ":"
+            line_styles: ["-"]         # per-series override e.g. ["-", "--"]
+            # ── Markers ───────────────────────────────────────────────
+            markers: false
+            marker_size: 5.5
+            marker_shapes: ["s", "o", "^", "D"]
+            # ── Annotations ───────────────────────────────────────────
+            data_lbl_size: 8
+            data_lbl_bold: true
+            data_lbl_color: "#1a1a1a"
+            data_lbl_decimals: 1
+            data_lbl_color_match_series: false  # label colour = series colour
+            show_values_all:    false        # true = label EVERY data point on all chart types
+            show_values_latest: true         # true = label LATEST point only (default; show_values_all overrides)
+            annot_avoid_xaxis: false         # prevent end-of-series labels from overlapping x-axis
+            # ── Legend ────────────────────────────────────────────────
+            legend_loc: "top"       # top | right | none
+            legend_fontsize: 10
+            legend_offset: -0.08          # gap between chart top and legend (fraction of axes height)
+            legend_width: 0.4            # swatch length in font-size units
+            legend_label_n_tax_gap: 0.5   # gap between swatch and label text
+            legend_height: 0.4            # swatch vertical height in font-size units
+            legend_linewidth: 0.0         # line swatch thickness (pts); 0 = same as line_width
+            # ── Background ────────────────────────────────────────────
+            transparent: false
+            # ── Typography & axes ─────────────────────────────────────
+            font_family: "Calibri"
+            font_weight: "light"
+            tick_label_size: 8
+            show_x_axis: true
+            show_y_axis: false
+            show_y2_axis: false      # right y-axis spine for dual-axis charts
+            # false = x-axis line at y=0 | true = x-axis line at y_min (bottom of chart)
+            x_axis_at_data_min: true
+            axis_x_linewidth: 1.5
+            axis_y_linewidth: 1
+            axis_color: "#BDBDBD"   # spine lines and zero line colour
+            # ── Tick mark lengths (0 = hidden) ────────────────────────
+            x_tick_length: 4
+            x_tick_width:  0.4
+            y_tick_length: 0
+            y2_tick_length: 0
+            # ── X-label padding (gap between tick line and label, pts) ─
+            x_tick_pad: 8
+            # ── Tick label bold ───────────────────────────────────────
+            x_tick_bold: false
+            y_tick_bold: false
+            y2_tick_bold: false
+            # ── X-axis label angle ────────────────────────────────────
+            x_tick_angle: 0           # -1 = auto (0° ≤9 labels, 45° >9 labels)
+            # ── X-axis direction ──────────────────────────────────────
+            x_axis_reverse: false       # false = oldest→newest | true = newest→oldest
+            # ── X-axis label interval direction ──────────────────────
+            x_label_from_latest: false  # false = count from oldest (oldest always labelled)
+                                        # true  = count from latest (latest always labelled)
+            # ── Dual-axis annotation gap ──────────────────────────────
+            dual_annot_pad: 0.5        # fraction of x-range added as right padding (0.0 = off)
+            # ── Bar width ─────────────────────────────────────────────
+            bar_width: 0.0          # 0.0 = auto (computed from number of bars)
+
+
+
+    # ----------------------------------------------------------------
+    # AZIM PREMJI CPI  (Windows_3 Server)
+    # Script: A009_Azim_premji_cpi_V1.R
+    # Output: AZIM_PREMJI_PPT.pptx  (filename must NOT change)
+    # ----------------------------------------------------------------
+    PREMJI_CPI:
+      ppt_template:  "C:/Users/Administrator/AdQvestDir/Windows_3/codes/AZIM_PREMJI/AZIM_PREMJI_COMMON_FUNTIONS/azim_premji_template.pptx"
+      map_template:  "C:/Users/Administrator/AdQvestDir/NIIF_PPT_Properities_file/R_PPT_INDIA/India_updated_ST_UT_boundary_Updated.shp"
+      ppt_dir:       "C:/Users/Administrator/AdQvestDir/Windows_3/codes/AZIM_PREMJI/AZIM_PREMJI_OUTPUT_FILES"
+      excel_dir:     "C:/Users/Administrator/AdQvestDir/Windows_3/codes/AZIM_PREMJI/AZIM_PREMJI_OUTPUT_FILES"
+      functions_dir: "C:/Users/Administrator/AdQvestDir/Windows_3/codes/AZIM_PREMJI/AZIM_PREMJI_COMMON_FUNTIONS"
+      proj_font:     "C:/Windows/Fonts/timesbd.ttf"
+    
+
+    # ----------------------------------------------------------------
+    # AZIM PREMJI WEEKLY  (Windows_3 Server)
+    # Script: A007_AZIM_PREMJI_WEEKLY_R_PPT_V1.R
+    # Output: Weekly_Report.pptx  (filename must NOT change)
+    # ----------------------------------------------------------------
+    AZIM_PREMJI_WEEKLY:
+      ppt_template:  "C:/Users/Administrator/AdQvestDir/Windows_3/codes/AZIM_PREMJI/WEEKLY_REPORT/Weekly_Report.pptx"
+      map_template:  "C:/Users/Administrator/AdQvestDir/NIIF_PPT_Properities_file/R_PPT_INDIA/India_updated_ST_UT_boundary_Updated.shp"
+      ppt_dir:       "C:/Users/Administrator/AdQvestDir/Windows_3/codes/AZIM_PREMJI/WEEKLY_REPORT"
+      excel_dir:     "C:/Users/Administrator/AdQvestDir/Windows_3/codes/AZIM_PREMJI/WEEKLY_REPORT"
+      functions_dir: "C:/Users/Administrator/AdQvestDir/Windows_3/codes/AZIM_PREMJI/WEEKLY_REPORT/R_CODES_WEEKLY/R"
+      proj_font:     "C:/Windows/Fonts/calibril.ttf"
+   
+
+    # ----------------------------------------------------------------
+    # LIGHT HOUSE  (Windows_3 Server)
+    # Script: A008_LIGHT_HOUSE_R_PPT_N_DOC_V2.R
+    # Output: Light_House_PPT.pptx + LIGHT_HOUSE_DOC.docx (filenames must NOT change)
+    # ----------------------------------------------------------------
+    LIGHT_HOUSE:
+      ppt_template:  "C:/Users/Administrator/AdQvestDir/Windows_3/codes/light_house_docs/Light_house_output_files/Light_House_PPT.pptx"
+      map_template:  ""
+      ppt_dir:       "C:/Users/Administrator/AdQvestDir/Windows_3/codes/light_house_docs/Light_house_output_files"
+      excel_dir:     "C:/Users/Administrator/AdQvestDir/Windows_3/codes/light_house_docs/Light_house_output_files"
+      doc_dir:       "C:/Users/Administrator/AdQvestDir/Windows_3/codes/light_house_docs/Light_house_output_files"
+      functions_dir: "C:/Users/Administrator/AdQvestDir/Windows_3/codes/light_house_docs/Light_house_common_functions"
+      proj_font:     "C:/Windows/Fonts/calibril.ttf"
+    
+    # ----------------------------------------------------------------
+    # AMBIT MONTHLY HFI  (Windows_Main Server)
+    # Script: A001_AMBIT_MONTHLY_HFI_R_PPT_EXCEL_V3.R
+    # Output: AMBIT_HFI_TEMPLATE_V3.pptx  (filename must NOT change)
+    # NOTE:   Uses get_data_from_thurro_api.py (Windows_Main), not default module
+    # ----------------------------------------------------------------
+    AMBIT_MONTHLY_HFI:
+      ppt_template:  "C:/Users/Administrator/AdQvestDir/Windows_Main/codes/AMBIT_PPT_EXCEL/TEMPLATE_PPT/AMBIT_HFI_TEMPLATE_V3.pptx"
+      map_template:  ""
+      ppt_dir:       "C:/Users/Administrator/AdQvestDir/Windows_Main/codes/AMBIT_PPT_EXCEL"
+      excel_dir:     "C:/Users/Administrator/AdQvestDir/Windows_Main/codes/AMBIT_PPT_EXCEL"
+      functions_dir: "C:/Users/Administrator/AdQvestDir/Windows_Main/codes/AMBIT_PPT_EXCEL/TEMPLATE_PPT"
+      proj_font:     "C:/Windows/Fonts/calibril.ttf"
+     
+
+    # ----------------------------------------------------------------
+    # AMBIT UTILITIES SECTOR  (Windows_Main Server)
+    # Script: A001_AMBIT_Utilities_Sector_PPT_V2.R
+    # Output: AMBIT_Utilities_Sector_Template_PPT.pptx  (filename must NOT change)
+    # NOTE:   Uses get_data_from_thurro_api.py (Windows_Main), not default module
+    # ----------------------------------------------------------------
+    AMBIT_UTILITIES_SECTOR:
+      ppt_template:  "C:/Users/Administrator/AdQvestDir/Windows_Main/codes/AMBIT_UTILITIES_SECTOR_PPT/AMBIT_Utilities_Sector_PPT_Functions/AMBIT_Utilities_Sector_Template_PPT.pptx"
+      map_template:  ""
+      ppt_dir:       "C:/Users/Administrator/AdQvestDir/Windows_Main/codes/AMBIT_UTILITIES_SECTOR_PPT"
+      excel_dir:     "C:/Users/Administrator/AdQvestDir/Windows_Main/codes/AMBIT_UTILITIES_SECTOR_PPT"
+      functions_dir: "C:/Users/Administrator/AdQvestDir/Windows_Main/codes/AMBIT_UTILITIES_SECTOR_PPT/AMBIT_Utilities_Sector_PPT_Functions"
+      proj_font:     "C:/Windows/Fonts/calibril.ttf"
+    
+    NCAER_MONTHLY_PPT:
+      ppt_template:  "D:/Santonu/Documents/Claude/Projects/PYTHON_PPT_CHART_CREATION_SYSTEM/NCAER_PPT_PYTHON_VERSION/NCAER_MONTHLY_REPORT_PPT_TEMPLATE.pptx"
+      ai_title_dir:  "D:/Santonu/Documents/Claude/Projects/PYTHON_PPT_CHART_CREATION_SYSTEM/NCAER_PPT_PYTHON_VERSION/NCAER_MONTHLY_AI_GENERATED_TITLE.xlsx"
+      slides_config: "D:/Santonu/Documents/Claude/Projects/PYTHON_PPT_CHART_CREATION_SYSTEM/NCAER_PPT_PYTHON_VERSION/NCAER_MONTHLY_PPT_SLIDE_CONFIG_TEMPLATE.xlsx"
+      ai_slide_config: "D:/Santonu/Documents/Claude/Projects/PYTHON_PPT_CHART_CREATION_SYSTEM/NCAER_PPT_PYTHON_VERSION/NCAER_MONTHLY_PPT_SLIDE_FINAL_CONFIG_V2.xlsx"
+      ppt_output:    "D:/Santonu/Documents/Claude/Projects/PYTHON_PPT_CHART_CREATION_SYSTEM/NCAER_PPT_PYTHON_VERSION/NCAER_MONTHLY_PPT/NCAER_MONTHLY_PPT_report.pptx"
+      ppt_dir:       "D:/Santonu/Documents/Claude/Projects/PYTHON_PPT_CHART_CREATION_SYSTEM/NCAER_PPT_PYTHON_VERSION/NCAER_MONTHLY_PPT"
+      proj_font:     "C:/Windows/Fonts/calibril.ttf"
+      # ── Debug: save chart data to Excel for inspection ────────────────
+      debug_chart_data:      True
+      debug_chart_data_path: "D:/Santonu/Documents/Claude/Projects/PYTHON_PPT_CHART_CREATION_SYSTEM/NCAER_PPT_PYTHON_VERSION/NCAER_MONTHLY_PPT/debug_chart_data.xlsx"
+
+      chart_theme:
+            # ── Grid ─────────────────────────────────────────────────
+            grid_show: false
+            grid_color: "#dddddd"
+            grid_alpha: 1.0
+            grid_width: 1.0
+            # ── Y-axis number format ──────────────────────────────────
+            y_fmt: "parens"          # plain | comma | percent | parens
+            y2_fmt: "parens"
+            y_show_labels: true
+            y2_show_labels: true
+            tick_color: "#000000"
+            # ── Y-axis rotated unit labels ────────────────────────────
+            # Set "" here for global default; override per chart via y1_label in Excel.
+            y_axis_label: ""
+            y_axis_label_size: 10
+            y2_axis_label: ""
+            y2_axis_label_size: 10
+            # ── Series colours ────────────────────────────────────────
+            bar_color: "#4472C4"
+            line_colors: ["#4472C4", "#9C1C2C", "#C45050", "#6BA85F"]
+            line_width: 1.8
+            line_style: "-"         # "-" | "--" | ":"
+            line_styles: []         # per-series override e.g. ["-", "--"]
+            # ── Markers ───────────────────────────────────────────────
+            markers: true
+            marker_size: 5.5
+            marker_shapes: ["s", "o", "^", "D"]
+            # ── Annotations ───────────────────────────────────────────
+            data_lbl_size: 10
+            data_lbl_bold: true
+            data_lbl_color: "#1a1a1a"
+            data_lbl_decimals: 1
+            data_lbl_color_match_series: true  # label colour = series colour
+            show_values_all:    false        # true = label EVERY data point on all chart types
+            show_values_latest: true        # true = label LATEST point only (default; show_values_all overrides)
+            # ── Legend ────────────────────────────────────────────────
+            legend_loc: "top"       # top | right | none
+            legend_fontsize: 9
+            # ── Background ────────────────────────────────────────────
+            transparent: true
+            # ── Typography & axes ─────────────────────────────────────
+            font_family: "Verdana"
+            tick_label_size: 10
+            show_x_axis: true
+            show_y_axis: true
+            show_y2_axis: true      # right y-axis spine for dual-axis charts
+            axis_x_linewidth: 1
+            axis_y_linewidth: 1
+            axis_color: "#1a1a1a"   # spine lines and zero line colour
+            # ── Tick mark lengths (0 = hidden) ────────────────────────
+            x_tick_length: 10
+            x_tick_width:     0.5
+            y_tick_length: 10
+            y2_tick_length: 10
+            # ── Tick label bold ───────────────────────────────────────
+            x_tick_bold: true
+            y_tick_bold: true
+            y2_tick_bold: true
+            # ── X-axis label angle ────────────────────────────────────
+            x_tick_angle: -1            # -1 = auto (0° ≤9 labels, 45° >9 labels)
+            # ── X-axis direction ──────────────────────────────────────
+            x_axis_reverse: false       # false = oldest→newest | true = newest→oldest
+            # ── X-axis label interval direction ──────────────────────
+            x_label_from_latest: true  # false = count from oldest (oldest always labelled)
+                                        # true  = count from latest (latest always labelled)
+            # ── Dual-axis annotation gap ──────────────────────────────
+            dual_annot_pad: 0.08        # fraction of x-range added as right padding (0.0 = off)
+            # ── Bar width ─────────────────────────────────────────────
+            bar_width: 0.0          # 0.0 = auto (computed from number of bars)
+     
+     
+    # ----------------------------------------------------------------
+    # CPI MONTHLY PPT  (Phase 1 — Thurro API charts only)
+    # Runner: CPI_PPT/A001_CPI_MONTHLY_PPT.py
+    # Phase 2 will add MySQL / ClickHouse support
+    # ----------------------------------------------------------------
+    CPI_MONTHLY_PPT:
+      ppt_template:  "D:/Santonu/Documents/Claude/Projects/PYTHON_PPT_CHART_CREATION_SYSTEM/CPI_PPT/azim_premji_template.pptx"
+      slides_config: "D:/Santonu/Documents/Claude/Projects/PYTHON_PPT_CHART_CREATION_SYSTEM/CPI_PPT/CPI_MONTHLY_PPT_SLIDE_CONFIG.xlsx"
+      ppt_output:    "D:/Santonu/Documents/Claude/Projects/PYTHON_PPT_CHART_CREATION_SYSTEM/CPI_PPT/CPI_MONTHLY_PPT/CPI_MONTHLY_PPT_report.pptx"
+      ppt_dir:       "D:/Santonu/Documents/Claude/Projects/PYTHON_PPT_CHART_CREATION_SYSTEM/CPI_PPT/CPI_MONTHLY_PPT"
+      # ── Debug: save chart data to Excel for inspection ────────────────
+      debug_chart_data:      false
+      debug_chart_data_path: "D:/Santonu/Documents/Claude/Projects/PYTHON_PPT_CHART_CREATION_SYSTEM/CPI_PPT/CPI_MONTHLY_PPT/debug_chart_data.xlsx"
+
+      chart_theme:
+            # ── Grid ─────────────────────────────────────────────────
+            grid_show: false
+            grid_color: "#dddddd"
+            grid_alpha: 1.0
+            grid_width: 1.0
+            # ── Y-axis number format ──────────────────────────────────
+            y_fmt: "parens"
+            y2_fmt: "parens"
+            y_show_labels: true
+            y2_show_labels: true
+            tick_color: "#000000"
+            y_axis_label: ""
+            y_axis_label_size: 10
+            y2_axis_label: ""
+            y2_axis_label_size: 10
+            # ── Series colours ────────────────────────────────────────
+            bar_color: "#5c83c4"
+            line_colors: ["#5c83c4", "#ea833f", "#4CAF50", "#9C27B0", "#F44336", "#FF9800"]
+            line_width: 1.8
+            line_style: "-"
+            line_styles: []
+            # ── Markers ───────────────────────────────────────────────
+            markers: true
+            marker_size: 5.0
+            marker_shapes: ["s", "o", "^", "D", "v", "P"]
+            # ── Annotations ───────────────────────────────────────────
+            data_lbl_size: 10
+            data_lbl_bold: true
+            data_lbl_color: "#1a1a1a"
+            data_lbl_decimals: 1
+            data_lbl_color_match_series: true
+            show_values_all:    false       # true = label EVERY data point on all chart types
+            show_values_latest: true        # true = label LATEST point only (default; show_values_all overrides)
+            # ── Legend ────────────────────────────────────────────────
+            legend_loc: "bottom"
+            legend_fontsize: 9
+            # ── Background ────────────────────────────────────────────
+            transparent: true
+            # ── Typography & axes ─────────────────────────────────────
+            font_family: "Verdana"
+            tick_label_size: 10
+            show_x_axis: true
+            show_y_axis: true
+            show_y2_axis: false
+            axis_x_linewidth: 1
+            axis_y_linewidth: 1
+            axis_color: "#1a1a1a"
+            # ── Tick mark lengths ─────────────────────────────────────
+            x_tick_length: 5
+            x_tick_width:     0.5
+            y_tick_length: 5
+            y2_tick_length: 5
+            # ── Tick label bold ───────────────────────────────────────
+            x_tick_bold: false
+            y_tick_bold: false
+            y2_tick_bold: false
+            # ── X-axis label angle ────────────────────────────────────
+            x_tick_angle: -1
+            # ── X-axis direction ──────────────────────────────────────
+            x_axis_reverse: false
+            x_label_from_latest: true
+            # ── Dual-axis annotation gap ──────────────────────────────
+            dual_annot_pad: 0.08
+            # ── Bar width ─────────────────────────────────────────────
+            bar_width: 0.0
+
+    # ----------------------------------------------------------------
+    # LIGHT HOUSE MONTHLY PPT  (Phase 1 — Thurro API charts only)
+    # Runner: LIGHTHOUSE/A001_LIGHT_HOUSE_MONTHLY_PPT.py
+    # Phase 2 will add MySQL / ClickHouse support (table slides, pie chart)
+    # ----------------------------------------------------------------
+    LIGHT_HOUSE_MONTHLY_PPT:
+      ppt_template:  "D:/Santonu/Documents/Claude/Projects/PYTHON_PPT_CHART_CREATION_SYSTEM/LIGHTHOUSE/light_house_template_note.pptx"
+      slides_config: "D:/Santonu/Documents/Claude/Projects/PYTHON_PPT_CHART_CREATION_SYSTEM/LIGHTHOUSE/LIGHT_HOUSE_MONTHLY_PPT_SLIDE_CONFIG.xlsx"
+      ppt_output:    "D:/Santonu/Documents/Claude/Projects/PYTHON_PPT_CHART_CREATION_SYSTEM/LIGHTHOUSE/LIGHT_HOUSE_MONTHLY_PPT/LIGHT_HOUSE_MONTHLY_PPT_report.pptx"
+      ppt_dir:       "D:/Santonu/Documents/Claude/Projects/PYTHON_PPT_CHART_CREATION_SYSTEM/LIGHTHOUSE/LIGHT_HOUSE_MONTHLY_PPT"
+      debug_chart_data:      false
+      debug_chart_data_path: "D:/Santonu/Documents/Claude/Projects/PYTHON_PPT_CHART_CREATION_SYSTEM/LIGHTHOUSE/LIGHT_HOUSE_MONTHLY_PPT/debug_chart_data.xlsx"
+
+      chart_theme:
+            # ── Grid ─────────────────────────────────────────────────
+            grid_show: false
+            grid_color: "#dddddd"
+            grid_alpha: 1.0
+            grid_width: 1.0
+            # ── Y-axis number format ──────────────────────────────────
+            y_fmt: "parens"
+            y2_fmt: "parens"
+            y_show_labels: true
+            y2_show_labels: true
+            tick_color: "#000000"
+            y_axis_label: ""
+            y_axis_label_size: 10
+            y2_axis_label: ""
+            y2_axis_label_size: 10
+            # ── Series colours ────────────────────────────────────────
+            bar_color: "#5c8bc3"
+            line_colors: ["#5c8bc3", "#c4544c", "#93C572", "#7851a9", "#e27602", "#020150", "#54764B"]
+            line_width: 1.8
+            line_style: "-"
+            line_styles: []
+            # ── Markers ───────────────────────────────────────────────
+            markers: true
+            marker_size: 5.0
+            marker_shapes: ["s", "o", "^", "D", "v", "P"]
+            # ── Annotations ───────────────────────────────────────────
+            data_lbl_size: 10
+            data_lbl_bold: true
+            data_lbl_color: "#1a1a1a"
+            data_lbl_decimals: 1
+            data_lbl_color_match_series: true
+            show_values_all:    false       # true = label EVERY data point on all chart types
+            show_values_latest: true        # true = label LATEST point only (default; show_values_all overrides)
+            # ── Legend ────────────────────────────────────────────────
+            legend_loc: "bottom"
+            legend_fontsize: 9
+            # ── Background ────────────────────────────────────────────
+            transparent: true
+            # ── Typography & axes ─────────────────────────────────────
+            font_family: "Verdana"
+            tick_label_size: 10
+            show_x_axis: true
+            show_y_axis: true
+            show_y2_axis: false
+            axis_x_linewidth: 1
+            axis_y_linewidth: 1
+            axis_color: "#1a1a1a"
+            # ── Tick mark lengths ─────────────────────────────────────
+            x_tick_length: 5
+            x_tick_width:     0.5
+            y_tick_length: 5
+            y2_tick_length: 5
+            # ── Tick label bold ───────────────────────────────────────
+            x_tick_bold: false
+            y_tick_bold: false
+            y2_tick_bold: false
+            # ── X-axis label angle ────────────────────────────────────
+            x_tick_angle: -1
+            # ── X-axis direction ──────────────────────────────────────
+            x_axis_reverse: false
+            x_label_from_latest: true
+            # ── Dual-axis annotation gap ──────────────────────────────
+            dual_annot_pad: 0.08
+            # ── Bar width ─────────────────────────────────────────────
+            bar_width: 0.0
+
+    # ----------------------------------------------------------------
+    # AMBIT UTILITY PPT  (Phase 1 — Thurro API charts only)
+    # Runner: AMBIT_UTILITY/A001_AMBIT_UTILITY_PPT.py
+    # Phase 2 will add ClickHouse charts (demand tables, section breaks)
+    # ----------------------------------------------------------------
+    AMBIT_UTILITY_PPT:
+      ppt_template:  "D:/Santonu/Documents/Claude/Projects/PYTHON_PPT_CHART_CREATION_SYSTEM/AMBIT_UTILITY/AMBIT_Utilities_Sector_Template_PPT.pptx"
+      slides_config: "D:/Santonu/Documents/Claude/Projects/PYTHON_PPT_CHART_CREATION_SYSTEM/AMBIT_UTILITY/AMBIT_UTILITY_PPT_SLIDE_CONFIG.xlsx"
+      ppt_output:    "D:/Santonu/Documents/Claude/Projects/PYTHON_PPT_CHART_CREATION_SYSTEM/AMBIT_UTILITY/AMBIT_UTILITY_PPT/AMBIT_UTILITY_PPT_report.pptx"
+      ppt_dir:       "D:/Santonu/Documents/Claude/Projects/PYTHON_PPT_CHART_CREATION_SYSTEM/AMBIT_UTILITY/AMBIT_UTILITY_PPT"
+      debug_chart_data:      false
+      debug_chart_data_path: "D:/Santonu/Documents/Claude/Projects/PYTHON_PPT_CHART_CREATION_SYSTEM/AMBIT_UTILITY/AMBIT_UTILITY_PPT/debug_chart_data.xlsx"
+
+      chart_theme:
+            # ── Grid ─────────────────────────────────────────────────
+            grid_show: false
+            grid_color: "#dddddd"
+            grid_alpha: 1.0
+            grid_width: 1.0
+            # ── Y-axis number format ──────────────────────────────────
+            y_fmt: "parens"
+            y2_fmt: "parens"
+            y_show_labels: true
+            y2_show_labels: true
+            tick_color: "#000000"
+            y_axis_label: ""
+            y_axis_label_size: 10
+            y2_axis_label: ""
+            y2_axis_label_size: 10
+            # ── Series colours (energy/utilities palette) ─────────────
+            bar_color: "#1B5E20"
+            line_colors: ["#1B5E20", "#1565C0", "#E65100", "#6A1B9A", "#B71C1C", "#00695C", "#F9A825"]
+            line_width: 1.8
+            line_style: "-"
+            line_styles: []
+            # ── Markers ───────────────────────────────────────────────
+            markers: true
+            marker_size: 5.0
+            marker_shapes: ["s", "o", "^", "D", "v", "P"]
+            # ── Annotations ───────────────────────────────────────────
+            data_lbl_size: 10
+            data_lbl_bold: true
+            data_lbl_color: "#1a1a1a"
+            data_lbl_decimals: 1
+            data_lbl_color_match_series: true
+            show_values_all:    false       # true = label EVERY data point on all chart types
+            show_values_latest: true        # true = label LATEST point only (default; show_values_all overrides)
+            # ── Legend ────────────────────────────────────────────────
+            legend_loc: "bottom"
+            legend_fontsize: 9
+            # ── Background ────────────────────────────────────────────
+            transparent: true
+            # ── Typography & axes ─────────────────────────────────────
+            font_family: "Verdana"
+            tick_label_size: 10
+            show_x_axis: true
+            show_y_axis: true
+            show_y2_axis: false
+            axis_x_linewidth: 1
+            axis_y_linewidth: 1
+            axis_color: "#1a1a1a"
+            # ── Tick mark lengths ─────────────────────────────────────
+            x_tick_length: 5
+            x_tick_width:     0.5
+            y_tick_length: 5
+            y2_tick_length: 5
+            # ── Tick label bold ───────────────────────────────────────
+            x_tick_bold: false
+            y_tick_bold: false
+            y2_tick_bold: false
+            # ── X-axis label angle ────────────────────────────────────
+            x_tick_angle: -1
+            # ── X-axis direction ──────────────────────────────────────
+            x_axis_reverse: false
+            x_label_from_latest: true
+            # ── Dual-axis annotation gap ──────────────────────────────
+            dual_annot_pad: 0.08
+            # ── Bar width ─────────────────────────────────────────────
+            bar_width: 0.0
+
+
+    # AMBIT MONTHLY PPT  (Praty's machine — Thurro API charts)
+    # Runner: AMBIT_UTILITY/A001_AMBIT_UTILITY_PPT.py  (reuse same runner, point to new config)
+    # ----------------------------------------------------------------
+    AMBIT_MONTHLY_PPT:
+      ppt_template:    "C:/Users/praty/Desktop/AMBIT_PPT/AMBIT_Utilities_Sector_Template_PPT.pptx"
+      ai_title_dir:    "C:/Users/praty/Desktop/AMBIT_PPT/AMBIT_MONTHLY_AI_GENERATED_TITLE.xlsx"
+      slides_config:   "C:/Users/praty/Desktop/AMBIT_PPT/AMBIT_MONTHLY_PPT_SLIDE_CONFIG_TEMPLATE.xlsx"
+      ai_slide_config: "C:/Users/praty/Desktop/AMBIT_PPT/AMBIT_MONTHLY_PPT_SLIDE_CONFIG_TEMPLATE.xlsx"
+      ppt_output:      "C:/Users/praty/Desktop/AMBIT_PPT/AMBIT_MONTHLY_PPT_report.pptx"
+      ppt_dir:         "C:/Users/praty/Desktop/AMBIT_PPT/NCAER_MONTHLY_PPT"
+      proj_font:       "C:/Windows/Fonts/calibril.ttf"
+
+      debug_chart_data:      True
+      debug_chart_data_path: "C:/Users/praty/Desktop/AMBIT_PPT/debug_chart_data.xlsx"
+
+      chart_theme:
+            # ── Grid ─────────────────────────────────────────────────
+            grid_show: false
+            grid_color: "#dddddd"
+            grid_alpha: 1.0
+            grid_width: 1.0
+            # ── Y-axis number format ──────────────────────────────────
+            y_fmt: "parens"
+            y2_fmt: "parens"
+            y_show_labels: true
+            y2_show_labels: true
+            tick_color: "#1a1a1a"
+            # ── Y-axis rotated unit labels ────────────────────────────
+            y_axis_label: ""
+            y_axis_label_size: 10
+            y2_axis_label: ""
+            y2_axis_label_size: 10
+            # ── Series colours ────────────────────────────────────────
+            bar_color: "#C00000"
+            line_colors: ["#C00000", "#BFBFBF", "#F7C5B4", "#A6A6A6", "#808080", "#E7785F", "#EE9A85", "#4D4948"]
+            line_width: 1.8
+            line_style: "-"
+            line_styles: []
+            # ── Markers ───────────────────────────────────────────────
+            markers: true
+            marker_size: 5.5
+            marker_shapes: ["s", "o", "^", "D"]
+            # ── Annotations ───────────────────────────────────────────
+            data_lbl_size: 10
+            data_lbl_bold: false
+            data_lbl_color: "#1a1a1a"
+            data_lbl_decimals: 1
+            data_lbl_color_match_series: true
+            show_values_all:    false   # true = label EVERY data point
+            show_values_latest: true    # true = label LATEST point only
+            annot_avoid_xaxis:  false   # clamp label above x-axis line
+            # ── Legend ────────────────────────────────────────────────
+            legend_loc: "top"
+            legend_fontsize: 9
+            legend_offset: 0.02
+            legend_width: 2.0
+            legend_height: 0.7
+            legend_label_n_tax_gap: 0.8
+            legend_linewidth: 0.0
+            # ── Background ────────────────────────────────────────────
+            transparent: true
+            # ── Typography & axes ─────────────────────────────────────
+            font_family: "Futura Md BT"
+            font_weight: "normal"
+            tick_label_size: 10
+            show_x_axis: true
+            x_axis_at_data_min: false
+            show_y_axis: true
+            show_y2_axis: true
+            axis_x_linewidth: 1
+            axis_y_linewidth: 1
+            axis_color: "#1a1a1a"
+            zero_line_with_grid: false
+            # ── Tick mark lengths (0 = hidden) ────────────────────────
+            x_tick_length: 10
+            x_tick_width:     0.5
+            y_tick_length: 10
+            y2_tick_length: 10
+            x_tick_pad: 4
+            # ── Tick label bold ───────────────────────────────────────
+            x_tick_bold: false
+            y_tick_bold: false
+            y2_tick_bold: false
+            # ── X-axis label angle ────────────────────────────────────
+            x_tick_angle: -1
+            # ── X-axis direction ──────────────────────────────────────
+            x_axis_reverse: false
+            x_label_from_latest: true
+            # ── Dual-axis annotation gap ──────────────────────────────
+            dual_annot_pad: 0.08
+            # ── Bar width ─────────────────────────────────────────────
+            bar_width: 0.65
+
+    # ---- ADD A NEW PROJECT: copy any block above and update paths ----
